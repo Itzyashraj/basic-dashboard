@@ -15,8 +15,63 @@
         }
         body {
             display: flex;
+            flex-direction: column;
             background: #f4f4f4;
             color: #333;
+            overflow-x: hidden;
+        }
+        .navbar {
+            width: 100%;
+            height: 60px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #5A52FF;
+        }
+        .navbar .nav-icons {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .navbar .nav-icons i {
+            font-size: 18px;
+            cursor: pointer;
+            color: #5A52FF;
+        }
+        .profile-menu {
+            position: relative;
+        }
+        .profile-menu .dropdown {
+            position: absolute;
+            top: 40px;
+            right: 0;
+            background: white;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            display: none;
+        }
+        .profile-menu .dropdown a {
+            display: block;
+            padding: 10px 20px;
+            text-decoration: none;
+            color: #333;
+        }
+        .profile-menu .dropdown a:hover {
+            background: #f0f0ff;
+        }
+        .profile-menu.active .dropdown {
+            display: block;
         }
         .sidebar {
             width: 250px;
@@ -25,9 +80,9 @@
             color: #333;
             position: fixed;
             left: 0;
-            top: 0;
+            top: 60px;
             transition: width 0.3s ease-in-out;
-            overflow: hidden;
+            overflow-x: hidden;
             padding-top: 20px;
             border-right: 1px solid #ddd;
             box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
@@ -35,86 +90,68 @@
         .sidebar.closed {
             width: 70px;
         }
-        .sidebar .toggle-btn {
-            position: absolute;
-            top: 20px;
-            right: -25px;
-            background: #5A52FF;
-            color: white;
-            padding: 10px;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: 0.3s;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-        }
-        .sidebar .toggle-btn:hover {
-            background: #4338ca;
-        }
-        .sidebar ul {
-            list-style: none;
-            padding: 20px;
-            margin-top: 20px;
-        }
         .sidebar ul li {
-            padding: 12px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            padding: 12px 20px;
             cursor: pointer;
-            transition: background 0.3s, transform 0.2s;
-            font-size: 16px;
-            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .sidebar ul li i {
+            margin-right: 15px;
+        }
+        .sidebar ul li span {
+            flex-grow: 1;
+        }
+        .sidebar ul li .arrow {
+            transition: transform 0.3s;
+        }
+        .sidebar ul li.active {
+            background: #d0d0ff;
+            color: #333;
+            font-weight: bold;
         }
         .sidebar ul li:hover {
             background: #f0f0ff;
             color: #5A52FF;
-            transform: translateX(5px);
         }
-        .sidebar ul li i {
-            margin-right: 15px;
-            font-size: 18px;
-        }
-        .sidebar ul li span {
-            transition: opacity 0.3s ease-in-out;
-        }
-        .sidebar.closed ul li span {
-            opacity: 0;
-            pointer-events: none;
-        }
-        .sidebar ul li.active {
-            background: #5A52FF;
-            color: white;
-            border-radius: 5px;
-            box-shadow: 2px 2px 8px rgba(90, 82, 255, 0.3);
-        }
-        .sidebar ul li.active:hover {
-            background: #4338ca;
-        }
-        .arrow {
-            margin-left: auto;
-            font-size: 14px;
-            color: #5A52FF;
+        .sidebar.closed ul li span, .sidebar.closed ul li .arrow {
+            display: none;
         }
         .content {
             margin-left: 250px;
-            padding: 20px;
-            width: 100%;
-            transition: margin-left 0.3s;
+            padding: 80px 20px;
+            width: calc(100% - 250px);
+            transition: margin-left 0.3s, width 0.3s;
             background: white;
             min-height: 100vh;
+            overflow-x: hidden;
         }
         .sidebar.closed ~ .content {
             margin-left: 70px;
+            width: calc(100% - 70px);
         }
     </style>
 </head>
 <body>
-
+    
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="logo">Skydash</div>
+        <div class="nav-icons">
+            <i class="fas fa-bell"></i>
+            <div class="profile-menu" onclick="toggleDropdown()">
+                <i class="fas fa-user-circle"></i>
+                <div class="dropdown">
+                    <a href="#">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
-        <div class="toggle-btn" onclick="toggleSidebar()">
-            <i class="fas fa-bars"></i>
-        </div>
         <ul>
             <li onclick="loadContent('profile', this)"><i class="fas fa-user"></i> <span>Profile</span> <i class="fas fa-chevron-right arrow"></i></li>
             <li onclick="loadContent('past-records', this)"><i class="fas fa-history"></i> <span>Past Records</span> <i class="fas fa-chevron-right arrow"></i></li>
@@ -123,39 +160,42 @@
             <li onclick="loadContent('contact', this)"><i class="fas fa-envelope"></i> <span>Contact Us</span> <i class="fas fa-chevron-right arrow"></i></li>
         </ul>
     </div>
-
+    
     <!-- Main Content (Dynamic Content Will Load Here) -->
     <div class="content" id="content-area">
         <h1>Welcome to the Dashboard</h1>
         <p>Select an option from the sidebar.</p>
     </div>
-
+    
     <!-- JavaScript -->
     <script>
-        function toggleSidebar() {
-            document.getElementById("sidebar").classList.toggle("closed");
+        function toggleDropdown() {
+            document.querySelector(".profile-menu").classList.toggle("active");
         }
-
-        function loadContent(page, element) {
+            function loadContent(page, element) {
             // Remove active class from all items
             document.querySelectorAll(".sidebar ul li").forEach(li => li.classList.remove("active"));
             
             // Add active class to the clicked item
             element.classList.add("active");
-
-            // Define the content for each section
-            let content = {
-                "profile": `<h1>Profile Page</h1><p>Welcome to your profile. Here you can update your information.</p>`,
-                "past-records": `<h1>Past Records</h1><p>Here you can see all your past transactions and activities.</p>`,
-                "filters": `<h1>Filters</h1><p>Customize your search and data display using various filters.</p>`,
-                "about": `<h1>About Us</h1><p>Learn more about our platform and mission.</p>`,
-                "contact": `<h1>Contact Us</h1><p>Need help? Reach out to us anytime.</p>`
-            };
-
-            // Load the selected content
-            document.getElementById("content-area").innerHTML = content[page];
+            
+            // Load external page content
+            fetch(page + ".html")
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Page not found");
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    document.getElementById("content-area").innerHTML = data;
+                })
+                .catch(error => {
+                    document.getElementById("content-area").innerHTML = `<h1>Error</h1><p>Could not load ${page}.html</p>`;
+                    console.error("Error loading content:", error);
+                });
         }
     </script>
-
+    
 </body>
 </html>

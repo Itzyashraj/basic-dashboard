@@ -21,14 +21,16 @@
         .sidebar {
             width: 250px;
             height: 100vh;
-            background: #222;
-            color: white;
+            background: #ffffff;
+            color: #333;
             position: fixed;
             left: 0;
             top: 0;
             transition: width 0.3s ease-in-out;
             overflow: hidden;
             padding-top: 20px;
+            border-right: 1px solid #ddd;
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
         }
         .sidebar.closed {
             width: 70px;
@@ -37,15 +39,16 @@
             position: absolute;
             top: 20px;
             right: -25px;
-            background: #ff9800;
+            background: #5A52FF;
             color: white;
             padding: 10px;
             cursor: pointer;
             border-radius: 5px;
             transition: 0.3s;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
         }
         .sidebar .toggle-btn:hover {
-            background: #e68900;
+            background: #4338ca;
         }
         .sidebar ul {
             list-style: none;
@@ -53,15 +56,19 @@
             margin-top: 20px;
         }
         .sidebar ul li {
-            padding: 15px;
+            padding: 12px 20px;
             display: flex;
             align-items: center;
+            justify-content: space-between;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: background 0.3s, transform 0.2s;
+            font-size: 16px;
             border-radius: 5px;
         }
         .sidebar ul li:hover {
-            background: #444;
+            background: #f0f0ff;
+            color: #5A52FF;
+            transform: translateX(5px);
         }
         .sidebar ul li i {
             margin-right: 15px;
@@ -75,7 +82,18 @@
             pointer-events: none;
         }
         .sidebar ul li.active {
-            background: #ff9800;
+            background: #5A52FF;
+            color: white;
+            border-radius: 5px;
+            box-shadow: 2px 2px 8px rgba(90, 82, 255, 0.3);
+        }
+        .sidebar ul li.active:hover {
+            background: #4338ca;
+        }
+        .arrow {
+            margin-left: auto;
+            font-size: 14px;
+            color: #5A52FF;
         }
         .content {
             margin-left: 250px;
@@ -84,7 +102,6 @@
             transition: margin-left 0.3s;
             background: white;
             min-height: 100vh;
-            border-left: 5px solid #ff9800;
         }
         .sidebar.closed ~ .content {
             margin-left: 70px;
@@ -99,11 +116,11 @@
             <i class="fas fa-bars"></i>
         </div>
         <ul>
-            <li onclick="loadContent('profile', this)"><i class="fas fa-user"></i> <span>Profile</span></li>
-            <li onclick="loadContent('past-records', this)"><i class="fas fa-history"></i> <span>Past Records</span></li>
-            <li onclick="loadContent('filters', this)"><i class="fas fa-filter"></i> <span>Filters</span></li>
-            <li onclick="loadContent('about', this)"><i class="fas fa-info-circle"></i> <span>About Us</span></li>
-            <li onclick="loadContent('contact', this)"><i class="fas fa-envelope"></i> <span>Contact Us</span></li>
+            <li onclick="loadContent('profile', this)"><i class="fas fa-user"></i> <span>Profile</span> <i class="fas fa-chevron-right arrow"></i></li>
+            <li onclick="loadContent('past-records', this)"><i class="fas fa-history"></i> <span>Past Records</span> <i class="fas fa-chevron-right arrow"></i></li>
+            <li onclick="loadContent('filters', this)"><i class="fas fa-filter"></i> <span>Filters</span> <i class="fas fa-chevron-right arrow"></i></li>
+            <li onclick="loadContent('about', this)"><i class="fas fa-info-circle"></i> <span>About Us</span> <i class="fas fa-chevron-right arrow"></i></li>
+            <li onclick="loadContent('contact', this)"><i class="fas fa-envelope"></i> <span>Contact Us</span> <i class="fas fa-chevron-right arrow"></i></li>
         </ul>
     </div>
 
